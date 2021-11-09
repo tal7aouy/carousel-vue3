@@ -2,9 +2,12 @@
 import { onMounted, ref } from 'vue'
 export default {
   name: 'Carousel',
+  props: ['navigation', 'timeDuration', 'pagination', 'startAutoPlay'],
   setup() {
     const currentSlide = ref(1)
     const slidesCount = ref(null)
+    const autoPlay = ref(true)
+    const timeDuration = ref(3000)
     // next slider
     function nextSlide() {
       if (currentSlide.value === slidesCount.value) {
@@ -25,10 +28,26 @@ export default {
     function toSlide(index) {
       currentSlide.value = index + 1
     }
+    // autoPlay carousel
+    function autoPlaySlider() {
+      setInterval(() => {
+        nextSlide()
+      }, timeDuration.value)
+    }
+    if (autoPlay.value) {
+      autoPlaySlider()
+    }
     onMounted(() => {
       slidesCount.value = document.querySelectorAll('.slide').length
     })
-    return { currentSlide, prevSlide, nextSlide, slidesCount, toSlide }
+    return {
+      currentSlide,
+      prevSlide,
+      nextSlide,
+      slidesCount,
+      toSlide,
+      autoPlaySlider,
+    }
   },
 }
 </script>
