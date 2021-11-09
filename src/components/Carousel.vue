@@ -21,10 +21,14 @@ export default {
       }
       currentSlide.value -= 1
     }
+    // paginate to slide
+    function toSlide(index) {
+      currentSlide.value = index + 1
+    }
     onMounted(() => {
       slidesCount.value = document.querySelectorAll('.slide').length
     })
-    return { currentSlide, prevSlide, nextSlide }
+    return { currentSlide, prevSlide, nextSlide, slidesCount, toSlide }
   },
 }
 </script>
@@ -40,6 +44,16 @@ export default {
       <div class="toggle-page right">
         <i class="fas fa-chevron-right" @click="nextSlide"></i>
       </div>
+    </div>
+    <!-- Pagination -->
+    <div class="pagination">
+      <span
+        v-for="(slide, index) in slidesCount"
+        :key="index"
+        :class="{ active: currentSlide === index + 1 }"
+        @click="toSlide(index)"
+      >
+      </span>
     </div>
   </div>
 </template>
@@ -70,5 +84,25 @@ i {
   height: 40px;
   background-color: #6347fe;
   color: white;
+}
+.pagination {
+  position: absolute;
+  bottom: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+.pagination span {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+span.active {
+  background-color: #6347fe;
 }
 </style>
