@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Carousel class="carousel" v-slot="{ currentSlide }">
+    <Carousel :navigation="true" class="carousel" v-slot="{ currentSlide }">
       <Slide v-for="(slide, index) in carouselSlides" :key="index">
         <div v-show="currentSlide === index + 1" class="slide-info">
           <img :src="slide" alt="" />

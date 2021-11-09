@@ -3,11 +3,21 @@ import { onMounted, ref } from 'vue'
 export default {
   name: 'Carousel',
   props: ['navigation', 'timeDuration', 'pagination', 'startAutoPlay'],
-  setup() {
+  setup(props) {
     const currentSlide = ref(1)
     const slidesCount = ref(null)
-    const autoPlay = ref(true)
-    const timeDuration = ref(3000)
+    const autoPlay = ref(
+      props.startAutoPlay === undefined ? true : props.startAutoPlay
+    )
+    const timeDuration = ref(
+      props.timeDuration === undefined ? 4000 : props.timeDuration
+    )
+    const paginationEnabled = ref(
+      props.pagination === undefined ? true : props.pagination
+    )
+    const navigationEnabled = ref(
+      props.navigation === undefined ? true : props.navigation
+    )
     // next slider
     function nextSlide() {
       if (currentSlide.value === slidesCount.value) {
@@ -47,6 +57,8 @@ export default {
       slidesCount,
       toSlide,
       autoPlaySlider,
+      paginationEnabled,
+      navigationEnabled,
     }
   },
 }
@@ -56,7 +68,7 @@ export default {
   <div class="carousel">
     <slot :currentSlide="currentSlide" />
     <!-- navigation carousel -->
-    <div class="navigation">
+    <div v-if="navigationEnabled" class="navigation">
       <div class="toggle-page left">
         <i class="fas fa-chevron-left" @click="prevSlide"></i>
       </div>
@@ -65,7 +77,7 @@ export default {
       </div>
     </div>
     <!-- Pagination -->
-    <div class="pagination">
+    <div v-if="paginationEnabled" class="pagination">
       <span
         v-for="(slide, index) in slidesCount"
         :key="index"
@@ -118,7 +130,7 @@ i {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: #fff;
+  background-color: #95a69e;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 span.active {
